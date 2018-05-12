@@ -2,12 +2,8 @@
 
 mkdir -vp ${PREFIX}/bin
 
-CFLAGS="-Wall -g -m64 -pipe -O2 -fPIC"
-if [[ $ARCH = 64 ]]; then
-    CFLAGS="${CFLAGS} -march=x86-64"
-else
-    CFLAGS="${CFLAGS} -march=i386"
-fi
+CFLAGS="-march=native -mtune=native"
+
 export CFLAGS
 export CXXLAGS="${CFLAGS}"
 
@@ -17,5 +13,6 @@ chmod +x configure
         --enable-shared \
         --enable-static \
         --prefix=${PREFIX}
-make
-make install
+
+make -j${CPU_COUNT}
+make install -j${CPU_COUNT}
